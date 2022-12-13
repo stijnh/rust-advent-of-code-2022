@@ -1,11 +1,11 @@
 pub use anyhow::{anyhow, bail, ensure, Context as _, Error};
-pub use itertools::{all, any, enumerate, max, min, rev, zip, Itertools};
+pub use itertools::{all, any, enumerate, max, min, rev, Itertools};
 use lazy_static::lazy_static;
 use regex::Regex;
 use std::cmp::{Ord, Ordering};
 use std::default::Default;
 use std::fmt::Display;
-use std::iter::{Flatten, Map, Sum};
+use std::iter::{zip, Flatten, Map, Sum};
 pub use std::mem::swap;
 use std::str::FromStr;
 use std::sync::Mutex;

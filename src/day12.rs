@@ -60,7 +60,7 @@ pub(crate) fn run(lines: Lines) -> Result {
     let dists = calculate_dists(&heights, end);
     println!("part A: {:?}", dists[&start]);
 
-    let (best_start, best_dist) = dists
+    let (_, best_dist) = dists
         .iter()
         .filter(|(&k, _)| heights[&k] == 0)
         .min_by_key(|(_, &v)| v)
