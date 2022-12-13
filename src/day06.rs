@@ -26,7 +26,7 @@ fn find_marker_position(line: &str, n: usize) -> usize {
 pub(crate) fn run(lines: Lines) -> Result {
     let line = lines[0];
     println!("part A: {}", find_marker_position(line, 4));
-    println!("part A: {}", find_marker_position(line, 14));
+    println!("part B: {}", find_marker_position(line, 14));
 
     Ok(())
 }
