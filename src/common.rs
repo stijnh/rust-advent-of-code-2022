@@ -11,6 +11,7 @@ use std::str::FromStr;
 use std::sync::Mutex;
 
 pub type HashMap<K, V> = std::collections::HashMap<K, V, fnv::FnvBuildHasher>;
+pub type HashSet<K> = std::collections::HashSet<K, fnv::FnvBuildHasher>;
 pub type Result<T = (), E = Error> = std::result::Result<T, E>;
 pub type Lines<'a> = &'a [&'a str];
 

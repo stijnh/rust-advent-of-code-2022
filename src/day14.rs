@@ -1,6 +1,5 @@
 use crate::common::*;
 use std::cmp;
-use std::collections::HashSet;
 
 type Point = [i32; 2];
 
@@ -11,7 +10,7 @@ fn parse_points(line: &str) -> impl Iterator<Item = Point> + '_ {
 }
 
 fn build_cave(lines: Lines) -> HashSet<Point> {
-    let mut rocks = HashSet::<Point>::new();
+    let mut rocks = HashSet::default();
 
     for &line in lines {
         for (a, b) in parse_points(line).tuple_windows() {
@@ -57,7 +56,7 @@ fn drop_sand(objects: &HashSet<Point>, floor: i32, has_void: bool) -> Option<Poi
 }
 
 pub(crate) fn run(lines: Lines) -> Result {
-    let mut rocks = build_cave(lines);
+    let rocks = build_cave(lines);
     let floor = rocks.iter().map(|&[_, y]| y).max().unwrap() + 2;
 
     let mut objects = rocks.clone();
