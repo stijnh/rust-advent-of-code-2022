@@ -1,7 +1,9 @@
 use crate::common::*;
 use recap::Recap;
 use serde::Deserialize;
+use std::collections::hash_map::Entry;
 use std::collections::VecDeque;
+use std::iter::zip;
 
 #[derive(Debug, Recap, Deserialize)]
 #[recap(
@@ -67,15 +69,15 @@ fn parse_cave(lines: Lines) -> Vec<Node> {
 
 const N: usize = 16;
 
-fn solve(nodes: &[Node], max_time: i64) -> i64 {
-    #[derive(Debug, Copy, Clone)]
-    struct State {
-        position: usize,
-        time: i64,
-        is_opened: u64,
-        total_flow: i64,
-    }
+#[derive(Debug, Copy, Clone)]
+struct State {
+    position: usize,
+    time: i64,
+    is_opened: u64,
+    total_flow: i64,
+}
 
+fn compute_states(nodes: &[Node], max_time: i64) -> Vec<State> {
     assert_eq!(nodes.len(), N);
     let initial_state = State {
         position: 0,
@@ -84,13 +86,11 @@ fn solve(nodes: &[Node], max_time: i64) -> i64 {
         total_flow: 0,
     };
 
-    let mut queue = vec![initial_state];
-    let mut best_flow = 0;
+    let mut options = vec![initial_state];
+    let mut index = 0;
 
-    while let Some(state) = queue.pop() {
-        if state.total_flow > best_flow {
-            best_flow = state.total_flow;
-        }
+    while let Some(&state) = options.get(index) {
+        index += 1;
 
         for i in 0..N {
             let mask = 1 << i;
@@ -104,65 +104,43 @@ fn solve(nodes: &[Node], max_time: i64) -> i64 {
                     new_state.time = new_time;
                     new_state.is_opened |= mask;
                     new_state.total_flow += (max_time - new_time) * nodes[i].rate;
-                    queue.push(new_state);
+                    options.push(new_state);
                 }
             }
         }
     }
 
-    best_flow
+    options
+}
+
+fn solve(nodes: &[Node], max_time: i64) -> i64 {
+    compute_states(nodes, max_time)
+        .iter()
+        .map(|s| s.total_flow)
+        .max()
+        .unwrap()
 }
 
 fn solve_with_elephant(nodes: &[Node], max_time: i64) -> i64 {
-    #[derive(Debug, Copy, Clone)]
-    struct State {
-        positions: [usize; 2],
-        times: [i64; 2],
-        is_opened: u64,
-        total_flow: i64,
-    }
+    let mut best_states = HashMap::default();
 
-    assert_eq!(nodes.len(), N);
-    let initial_state = State {
-        positions: [0, 0],
-        times: [0, 0],
-        is_opened: 0,
-        total_flow: 0,
-    };
-
-    let mut queue = vec![initial_state];
-    let mut best_flow = 0;
-
-    while let Some(state) = queue.pop() {
-        if state.total_flow > best_flow {
-            best_flow = state.total_flow;
-        }
-
-        for i in 0..N {
-            let mask = 1 << i;
-
-            if (state.is_opened) & mask == 0 {
-                let active = if state.times[0] < state.times[1] {
-                    0
-                } else {
-                    1
-                };
-
-                let new_time = state.times[active] + nodes[state.positions[active]].dists[i] + 1;
-
-                if new_time < max_time {
-                    let mut new_state = state.clone();
-                    new_state.is_opened |= mask;
-                    new_state.total_flow += (max_time - new_time) * nodes[i].rate;
-                    new_state.positions[active] = i;
-                    new_state.times[active] = new_time;
-                    queue.push(new_state);
-                }
+    for state in compute_states(nodes, max_time) {
+        match best_states.entry(state.is_opened) {
+            Entry::Vacant(e) => {
+                e.insert(state);
             }
+            Entry::Occupied(mut e) if state.total_flow > e.get().total_flow => {
+                e.insert(state);
+            }
+            _ => {}
         }
     }
 
-    best_flow
+    itertools::iproduct!(best_states.values(), best_states.values())
+        .filter(|(a, b)| a.is_opened & b.is_opened == 0)
+        .map(|(a, b)| a.total_flow + b.total_flow)
+        .max()
+        .unwrap()
 }
 
 pub(crate) fn run(lines: Lines) -> Result {
