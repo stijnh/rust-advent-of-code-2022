@@ -112,7 +112,7 @@ fn drop_rock(
     }
 }
 
-pub(crate) fn experiment(jets: &[char], nrocks: usize) -> i64 {
+pub(crate) fn simulate(jets: &[char], nrocks: usize) -> i64 {
     let mut solid = HashSet::<(i64, i64)>::default();
     let mut highest_y = -1;
     let mut jet_index = 0;
@@ -158,7 +158,7 @@ pub(crate) fn run(lines: Lines) -> Result {
     let height = simulate(&jets, 2022);
     println!("part A: {:?}", height);
 
-    let height = experiment(&jets, 1000000000000);
+    let height = simulate(&jets, 1000000000000);
     println!("part B: {:?}", height);
     Ok(())
 }
