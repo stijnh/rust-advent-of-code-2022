@@ -1,5 +1,4 @@
 use crate::common::*;
-use std::collections::VecDeque;
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Ord, PartialOrd)]
 struct Blizzard {
@@ -46,8 +45,8 @@ fn search_path(
     blizzards: &[Blizzard],
 ) -> Option<i64> {
     let [width, height] = dims;
-    let mut pos = HashMap::default();
-    pos.insert(start, vec![(0, 0)]);
+    let mut pos = HashSet::default();
+    pos.insert(start);
     let mut t = time_start;
 
     loop {
@@ -59,8 +58,8 @@ fn search_path(
             ));
         }
 
-        let mut new_pos = HashMap::default();
-        for ([x, y], trace) in pos {
+        let mut new_pos = HashSet::default();
+        for [x, y] in pos {
             for (dx, dy) in [(0, 0), (0, 1), (0, -1), (1, 0), (-1, 0)] {
                 let (nx, ny) = (x + dx, y + dy);
 
@@ -69,14 +68,12 @@ fn search_path(
                 }
 
                 if !obstacles.contains(&(nx, ny)) {
-                    let mut new_trace = trace.clone();
-                    new_trace.push((nx, ny));
-                    new_pos.insert([nx, ny], new_trace);
+                    new_pos.insert([nx, ny]);
                 }
             }
         }
 
-        if let Some(trace) = new_pos.get(&goal) {
+        if let Some(_) = new_pos.get(&goal) {
             return Some(t);
         }
 

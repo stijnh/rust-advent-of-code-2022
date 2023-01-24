@@ -63,7 +63,7 @@ fn evaluate(key: &str, monkeys: &HashMap<String, Expr>) -> Option<Val> {
     })
 }
 
-fn solve<'a>(mut var: &'a str, mut val: Val, monkeys: &'a HashMap<String, Expr>) -> (&'a str, Val) {
+fn solve<'a>(mut var: &'a str, val: Val, monkeys: &'a HashMap<String, Expr>) -> (&'a str, Val) {
     let Some(expr) = monkeys.get(var) else {
         return (var, val);
     };
@@ -96,7 +96,7 @@ pub(crate) fn run(lines: Lines) -> Result {
 
     // Solve `var == constant` or `constant == var` for root
     let answer = match &monkeys["root"] {
-        Expr::Binary(lhs, op, rhs) => match (evaluate(lhs, &monkeys), evaluate(rhs, &monkeys)) {
+        Expr::Binary(lhs, _, rhs) => match (evaluate(lhs, &monkeys), evaluate(rhs, &monkeys)) {
             (Some(lhs), None) => solve(rhs, lhs, &monkeys),
             (None, Some(rhs)) => solve(lhs, rhs, &monkeys),
             _ => unreachable!(),

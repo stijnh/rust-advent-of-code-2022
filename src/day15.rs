@@ -78,7 +78,7 @@ fn nonbeacon_position(sensors: &[Sensor], y: i64) -> (i64, Vec<RangeInclusive<i6
 }
 
 pub(crate) fn run(lines: Lines) -> Result {
-    let mut sensors = parse_sensors(lines);
+    let sensors = parse_sensors(lines);
 
     println!("part A: {:?}", nonbeacon_position(&sensors, 2000000));
 

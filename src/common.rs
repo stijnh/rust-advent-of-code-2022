@@ -5,7 +5,7 @@ use regex::Regex;
 use std::cmp::{Ord, Ordering};
 use std::default::Default;
 use std::fmt::Display;
-use std::iter::{zip, Flatten, Map, Sum};
+use std::iter::{Flatten, Map, Sum};
 pub use std::mem::swap;
 use std::str::FromStr;
 use std::sync::Mutex;
@@ -61,6 +61,7 @@ where
     iter.into_iter().flatten()
 }
 
+#[allow(dead_code)]
 pub fn parse_list<I: FromStr>(line: &str, delim: char) -> Result<Vec<I>>
 where
     I::Err: Display,

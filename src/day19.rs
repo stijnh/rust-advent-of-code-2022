@@ -1,7 +1,6 @@
 use crate::common::*;
 use recap::Recap;
 use serde::Deserialize;
-use std::mem;
 use std::str::FromStr;
 
 const ORE: usize = 0;

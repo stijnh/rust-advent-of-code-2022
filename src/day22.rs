@@ -91,7 +91,7 @@ fn walk_map(map: ArrayView2<Tile>, steps: &[Step]) -> (usize, usize, usize) {
 
         let mut ni = i;
         let mut nj = j;
-        let mut is_valid = loop {
+        let is_valid = loop {
             ni = (ni + di) % height;
             nj = (nj + dj) % width;
 

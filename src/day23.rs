@@ -1,5 +1,4 @@
 use crate::common::*;
-use std::ops::RangeInclusive;
 
 type Pos = [i64; 2];
 
@@ -122,6 +121,7 @@ fn compute_empty_tiles(elves: &HashSet<Pos>) -> i64 {
     area - (elves.len() as i64)
 }
 
+#[allow(dead_code)]
 fn visualize(elves: &HashSet<Pos>) {
     let ([min_x, max_x], [min_y, max_y]) = compute_bounds(elves);
 

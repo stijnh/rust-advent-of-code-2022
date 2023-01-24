@@ -1,5 +1,4 @@
 use crate::common::*;
-use num::integer::div_floor;
 
 fn parse_snafu(input: &str) -> i64 {
     let mut output = 0;

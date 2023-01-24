@@ -7,11 +7,11 @@ fn mix_numbers(numbers: &[i64], times: usize) -> Vec<i64> {
 
     for _ in 0..times {
         for i in 0..n {
-            let mut delta = numbers[i];
+            let delta = numbers[i];
             let old_index = pos.iter().position(|&p| p == i).unwrap();
             let mut new_index = old_index
                 + if delta >= 0 {
-                    (delta as usize % (n - 1))
+                    delta as usize % (n - 1)
                 } else {
                     (n - 1) - (((-delta) as usize) % (n - 1))
                 };

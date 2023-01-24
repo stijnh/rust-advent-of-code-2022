@@ -3,7 +3,6 @@ use recap::Recap;
 use serde::Deserialize;
 use std::collections::hash_map::Entry;
 use std::collections::VecDeque;
-use std::iter::zip;
 
 #[derive(Debug, Recap, Deserialize)]
 #[recap(
