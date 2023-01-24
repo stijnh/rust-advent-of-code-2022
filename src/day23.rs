@@ -34,7 +34,7 @@ fn simulate_convergence(input: &HashSet<Pos>) -> usize {
         let old_elves = elves;
         elves = simulate_once(&old_elves, round);
 
-        if elves == new_elves {
+        if elves == old_elves {
             return round + 1;
         }
     }
